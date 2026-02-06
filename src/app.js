@@ -46,10 +46,12 @@ app.use('/api/notifications', notificationsApiRouter);
 app.use(express.static(path.join(__dirname, '..', 'real-estate-light')));
 
 // Toutes les routes non-API renvoient vers index.html (SPA fallback)
-app.get('*', (req, res, next) => {
-  if (req.path.startsWith('/api')) {
+app.use((req, res, next) => {
+  if (req.path.startsWith('/api') || req.path.startsWith('/uploads')) {
     return next();
   }
+  // Si le fichier existe, express.static l'a déjà servi
+  // Sinon, on renvoie index.html pour le routing côté client
   res.sendFile(path.join(__dirname, '..', 'real-estate-light', 'index.html'));
 });
 
