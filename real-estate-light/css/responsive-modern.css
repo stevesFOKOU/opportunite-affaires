@@ -366,6 +366,219 @@
 }
 
 /* ========================================
+   MOBILE SPECIFIC COMPONENTS
+   ======================================== */
+@media (max-width: 768px) {
+  /* Property Detail Page */
+  .property-gallery {
+    grid-template-columns: 1fr;
+    gap: var(--space-3);
+  }
+
+  .property-main-image {
+    height: 250px;
+  }
+
+  .property-info {
+    padding: var(--space-4);
+  }
+
+  .property-header {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: var(--space-3);
+  }
+
+  .property-price {
+    font-size: var(--text-2xl);
+  }
+
+  .property-features {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  .property-description {
+    font-size: var(--text-sm);
+  }
+
+  /* Contact Form in Property Detail */
+  .contact-sidebar {
+    position: static;
+    width: 100%;
+    margin-top: var(--space-6);
+  }
+
+  /* Admin Dashboard */
+  .admin-stats {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-3);
+  }
+
+  .admin-tabs {
+    flex-wrap: wrap;
+    gap: var(--space-2);
+  }
+
+  .admin-tab {
+    flex: 1 1 auto;
+    min-width: 100px;
+    text-align: center;
+    padding: var(--space-2) var(--space-3);
+    font-size: var(--text-xs);
+  }
+
+  /* Tables - Horizontal scroll */
+  .table-container {
+    overflow-x: auto;
+    -webkit-overflow-scrolling: touch;
+  }
+
+  .table {
+    min-width: 600px;
+  }
+
+  /* Action buttons in tables */
+  .table .btn {
+    padding: var(--space-1) var(--space-2);
+    font-size: var(--text-xs);
+  }
+
+  /* Leads Pipeline */
+  .leads-pipeline {
+    flex-direction: column;
+  }
+
+  .leads-column {
+    width: 100%;
+    min-width: auto;
+  }
+
+  .lead-card {
+    padding: var(--space-3);
+  }
+
+  /* Profile Page */
+  .profile-header {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-4);
+  }
+
+  .profile-avatar {
+    width: 80px;
+    height: 80px;
+  }
+
+  /* Submit Form */
+  .submit-form .form-section {
+    padding: var(--space-4);
+  }
+
+  .file-upload-zone {
+    padding: var(--space-6);
+  }
+
+  .file-upload-zone svg {
+    width: 40px;
+    height: 40px;
+  }
+
+  /* Agencies Page */
+  .agencies-grid {
+    grid-template-columns: 1fr;
+  }
+
+  .agency-card {
+    flex-direction: column;
+    text-align: center;
+  }
+
+  .agency-logo {
+    margin: 0 auto var(--space-4);
+  }
+
+  /* Favorites Page */
+  .favorites-header {
+    flex-direction: column;
+    gap: var(--space-3);
+    text-align: center;
+  }
+
+  /* Flex utilities */
+  .flex-between {
+    flex-direction: column;
+    align-items: stretch;
+    gap: var(--space-3);
+  }
+
+  .flex-between > * {
+    width: 100%;
+  }
+
+  /* Buttons full width on mobile */
+  .btn-mobile-full {
+    width: 100%;
+  }
+
+  /* Hide on mobile */
+  .hide-mobile {
+    display: none !important;
+  }
+
+  /* Show on mobile */
+  .show-mobile {
+    display: block !important;
+  }
+
+  /* Text alignment */
+  .text-center-mobile {
+    text-align: center;
+  }
+
+  /* Spacing adjustments */
+  .mb-mobile-4 {
+    margin-bottom: var(--space-4);
+  }
+
+  .mt-mobile-4 {
+    margin-top: var(--space-4);
+  }
+
+  /* Badge adjustments */
+  .badge {
+    font-size: 10px;
+    padding: 2px 6px;
+  }
+
+  .nav-badge {
+    font-size: 9px;
+    padding: 1px 4px;
+  }
+
+  /* Card footer on mobile */
+  .card-footer {
+    flex-direction: column;
+    gap: var(--space-3);
+    align-items: stretch;
+  }
+
+  .card-footer .btn {
+    width: 100%;
+    text-align: center;
+  }
+
+  /* Inline styles override for mobile */
+  [style*="display: flex"][style*="gap"] {
+    gap: var(--space-3) !important;
+  }
+
+  [style*="grid-template-columns"] {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+/* ========================================
    PRINT STYLES
    ======================================== */
 @media print {
