@@ -1,0 +1,441 @@
+/* ========================================
+   RESPONSIVE STYLES - MODERN 2025
+   Mobile-first approach
+   ======================================== */
+
+/* ========================================
+   TABLET (max-width: 1024px)
+   ======================================== */
+@media (max-width: 1024px) {
+  :root {
+    --container-padding: 20px;
+  }
+
+  .hero-title {
+    font-size: var(--text-4xl);
+  }
+
+  .section {
+    padding: var(--space-12) 0;
+  }
+
+  .properties-grid {
+    grid-template-columns: repeat(2, 1fr);
+    gap: var(--space-6);
+  }
+
+  .footer-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  .auth-container {
+    gap: var(--space-10);
+  }
+}
+
+/* ========================================
+   MOBILE LANDSCAPE (max-width: 768px)
+   ======================================== */
+@media (max-width: 768px) {
+  :root {
+    --container-padding: 16px;
+  }
+
+  /* Header & Navigation */
+  .header-inner {
+    padding: var(--space-3) 0;
+  }
+
+  .nav {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    background: var(--bg-primary);
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    gap: var(--space-2);
+    padding: var(--space-6);
+    transform: translateX(-100%);
+    opacity: 0;
+    visibility: hidden;
+    transition: var(--transition-slow);
+    z-index: var(--z-modal);
+  }
+
+  .nav.active {
+    transform: translateX(0);
+    opacity: 1;
+    visibility: visible;
+  }
+
+  .nav-link {
+    font-size: var(--text-xl);
+    padding: var(--space-4) var(--space-6);
+    width: 100%;
+    text-align: center;
+    border-radius: var(--radius-lg);
+  }
+
+  .nav-link::after {
+    display: none;
+  }
+
+  .menu-toggle {
+    display: flex;
+    z-index: calc(var(--z-modal) + 1);
+  }
+
+  .nav-actions {
+    display: none;
+  }
+
+  /* Show auth buttons in mobile nav */
+  .nav.active .nav-actions {
+    display: flex;
+    flex-direction: column;
+    width: 100%;
+    margin-top: var(--space-6);
+    padding-top: var(--space-6);
+    border-top: 1px solid var(--border-light);
+  }
+
+  /* Hero */
+  .hero {
+    padding: 120px 0 var(--space-12);
+    min-height: auto;
+  }
+
+  .hero-title {
+    font-size: var(--text-3xl);
+  }
+
+  .hero-text {
+    font-size: var(--text-base);
+  }
+
+  .hero-badge {
+    font-size: var(--text-xs);
+  }
+
+  /* Search Box */
+  .search-box {
+    padding: var(--space-4);
+    border-radius: var(--radius-xl);
+  }
+
+  .search-box-inner {
+    flex-direction: column;
+    gap: var(--space-3);
+  }
+
+  .search-box .form-input,
+  .search-box .form-select,
+  .search-box .btn {
+    width: 100%;
+    min-width: auto;
+  }
+
+  /* Cards */
+  .properties-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-5);
+  }
+
+  .card-image {
+    height: 200px;
+  }
+
+  .card-features {
+    flex-wrap: wrap;
+    gap: var(--space-3);
+  }
+
+  /* Filters */
+  .filters {
+    position: fixed;
+    top: 0;
+    left: 0;
+    right: 0;
+    bottom: 0;
+    z-index: var(--z-modal);
+    overflow-y: auto;
+    transform: translateX(-100%);
+    transition: var(--transition-slow);
+    border-radius: 0;
+  }
+
+  .filters.active {
+    transform: translateX(0);
+  }
+
+  .filters-toggle {
+    display: flex;
+  }
+
+  /* Footer */
+  .footer-grid {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .footer-bottom {
+    flex-direction: column;
+    text-align: center;
+    gap: var(--space-4);
+  }
+
+  /* Section */
+  .section-title {
+    font-size: var(--text-2xl);
+  }
+
+  .section-subtitle {
+    font-size: var(--text-base);
+  }
+
+  /* Tables */
+  .table-container {
+    border-radius: var(--radius-lg);
+  }
+
+  .table th,
+  .table td {
+    padding: var(--space-3);
+    font-size: var(--text-xs);
+  }
+
+  /* Auth Pages */
+  .auth-container {
+    grid-template-columns: 1fr;
+    gap: var(--space-8);
+  }
+
+  .auth-branding {
+    min-height: auto;
+    padding: var(--space-8);
+    border-radius: var(--radius-xl);
+  }
+
+  .auth-branding h1 {
+    font-size: var(--text-2xl);
+  }
+
+  .auth-form-container {
+    max-width: 100%;
+  }
+
+  /* Modals */
+  .modal-overlay {
+    padding: var(--space-4);
+    align-items: flex-end;
+  }
+
+  .modal {
+    max-width: 100%;
+    border-radius: var(--radius-xl) var(--radius-xl) 0 0;
+    max-height: 85vh;
+  }
+
+  .modal-body {
+    max-height: calc(85vh - 140px);
+  }
+
+  /* Form */
+  .form-row {
+    grid-template-columns: 1fr;
+    gap: var(--space-4);
+  }
+
+  .form-section {
+    padding: var(--space-4);
+  }
+
+  /* Stat Cards */
+  .stat-value {
+    font-size: var(--text-2xl);
+  }
+}
+
+/* ========================================
+   MOBILE PORTRAIT (max-width: 480px)
+   ======================================== */
+@media (max-width: 480px) {
+  :root {
+    --container-padding: 12px;
+  }
+
+  .hero-title {
+    font-size: var(--text-2xl);
+  }
+
+  .hero-text {
+    font-size: var(--text-sm);
+  }
+
+  .btn {
+    padding: var(--space-3) var(--space-4);
+    font-size: var(--text-sm);
+  }
+
+  .btn-lg {
+    padding: var(--space-3) var(--space-6);
+    font-size: var(--text-sm);
+  }
+
+  .card-body {
+    padding: var(--space-4);
+  }
+
+  .card-title {
+    font-size: var(--text-base);
+  }
+
+  .card-price {
+    font-size: var(--text-lg);
+  }
+
+  .section {
+    padding: var(--space-10) 0;
+  }
+
+  .section-title {
+    font-size: var(--text-xl);
+  }
+
+  /* Notification */
+  .notification {
+    left: var(--space-4);
+    right: var(--space-4);
+    bottom: var(--space-4);
+  }
+
+  /* Logo */
+  .logo {
+    font-size: var(--text-base);
+    gap: var(--space-2);
+  }
+
+  .logo img {
+    width: 36px;
+    height: 36px;
+  }
+
+  /* Empty State */
+  .empty-state {
+    padding: var(--space-10) var(--space-4);
+  }
+
+  .empty-state svg {
+    width: 60px;
+    height: 60px;
+  }
+
+  .empty-state h3 {
+    font-size: var(--text-lg);
+  }
+}
+
+/* ========================================
+   PRINT STYLES
+   ======================================== */
+@media print {
+  .header,
+  .footer,
+  .filters,
+  .btn,
+  .nav-actions,
+  .menu-toggle,
+  .card-favorite,
+  .notification {
+    display: none !important;
+  }
+
+  body {
+    background: white;
+    color: black;
+  }
+
+  .hero {
+    padding: var(--space-6) 0;
+    background: none !important;
+    color: black;
+    min-height: auto;
+  }
+
+  .hero::before,
+  .hero::after {
+    display: none;
+  }
+
+  .card {
+    box-shadow: none;
+    border: 1px solid #ddd;
+    break-inside: avoid;
+  }
+
+  .properties-grid {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  a {
+    color: inherit;
+    text-decoration: underline;
+  }
+}
+
+/* ========================================
+   REDUCED MOTION
+   ======================================== */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+  }
+
+  html {
+    scroll-behavior: auto;
+  }
+}
+
+/* ========================================
+   HIGH CONTRAST MODE
+   ======================================== */
+@media (prefers-contrast: high) {
+  :root {
+    --border-light: var(--gray-400);
+    --border-default: var(--gray-600);
+  }
+
+  .btn-outline {
+    border-width: 2px;
+  }
+
+  .form-input,
+  .form-select,
+  .form-textarea {
+    border-width: 2px;
+  }
+}
+
+/* ========================================
+   DARK MODE (Optional - Future)
+   ======================================== */
+@media (prefers-color-scheme: dark) {
+  /* Uncomment to enable auto dark mode
+  :root {
+    --bg-primary: var(--gray-900);
+    --bg-secondary: var(--gray-950);
+    --surface: var(--gray-800);
+    --text-primary: var(--gray-100);
+    --text-secondary: var(--gray-400);
+    --border-light: var(--gray-700);
+    --border-default: var(--gray-600);
+  }
+  */
+}
