@@ -314,6 +314,37 @@ function getImageUrl(path) {
   return `${UPLOADS_BASE_URL}${path}`;
 }
 
+// Gérer les erreurs de chargement d'images
+function handleImageError(img) {
+  img.onerror = null; // Éviter boucle infinie
+  img.src = 'assets/images/placeholder.jpg';
+}
+
+// Initialiser la gestion des erreurs d'images au chargement
+document.addEventListener('DOMContentLoaded', () => {
+  document.querySelectorAll('img').forEach(img => {
+    img.onerror = function() { handleImageError(this); };
+  });
+
+  // Observer pour les nouvelles images ajoutées dynamiquement
+  const observer = new MutationObserver(mutations => {
+    mutations.forEach(mutation => {
+      mutation.addedNodes.forEach(node => {
+        if (node.nodeName === 'IMG') {
+          node.onerror = function() { handleImageError(this); };
+        }
+        if (node.querySelectorAll) {
+          node.querySelectorAll('img').forEach(img => {
+            img.onerror = function() { handleImageError(this); };
+          });
+        }
+      });
+    });
+  });
+
+  observer.observe(document.body, { childList: true, subtree: true });
+});
+
 // Afficher une notification
 function showNotification(message, type = 'success') {
   const existing = document.querySelector('.notification');
