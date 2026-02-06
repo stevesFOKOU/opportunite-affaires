@@ -1,0 +1,32 @@
+{
+  "name": "opportunite-affaires",
+  "version": "1.0.0",
+  "description": "Plateforme immobilière - Opportunité d'affaires",
+  "main": "src/server.js",
+  "engines": {
+    "node": ">=18.0.0"
+  },
+  "dependencies": {
+    "@prisma/client": "^6.0.0",
+    "bcrypt": "^6.0.0",
+    "body-parser": "^2.2.2",
+    "cors": "^2.8.6",
+    "dotenv": "^16.4.5",
+    "express": "^5.2.1",
+    "jsonwebtoken": "^9.0.3",
+    "multer": "^2.0.2"
+  },
+  "devDependencies": {
+    "jest": "^29.7.0",
+    "prisma": "^6.0.0",
+    "supertest": "^6.3.4"
+  },
+  "scripts": {
+    "start": "node src/server.js",
+    "dev": "node src/server.js",
+    "build": "npx prisma generate",
+    "postinstall": "npx prisma generate",
+    "test": "jest",
+    "prisma": "prisma"
+  }
+}

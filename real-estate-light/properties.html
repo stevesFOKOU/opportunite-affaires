@@ -1,0 +1,216 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Toutes les annonces immobilières - Opportunité d'affaires">
+  <title>Annonces - Opportunité d'affaires</title>
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="Logo">
+        <span>Opportunité d'affaires</span>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="properties.html" class="nav-link">Annonces</a>
+        <a href="agencies.html" class="nav-link">Agences</a>
+        <a href="submit.html" class="nav-link">Publier</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="auth-buttons">
+          <a href="login.html" class="btn btn-outline">Se connecter</a>
+        </div>
+        <div class="user-menu" style="display: none;">
+          <span class="user-name"></span>
+          <a href="admin.html" class="btn btn-ghost">Dashboard</a>
+          <button class="btn btn-ghost logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle">Menu</button>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section style="padding: 120px 0 40px; background: var(--light);">
+    <div class="container">
+      <h1 class="section-title">Toutes les annonces</h1>
+      <p class="section-subtitle" id="properties-count">Chargement...</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="section" style="padding-top: 0;">
+    <div class="container">
+      <div style="display: grid; grid-template-columns: 280px 1fr; gap: 30px;">
+        
+        <!-- Filters Sidebar -->
+        <aside class="filters">
+          <h3 class="filter-title">Filtres</h3>
+
+          <div class="filter-group">
+            <label class="filter-group-title">Recherche</label>
+            <input type="text" id="filter-search" class="form-input" placeholder="Ville, quartier...">
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-group-title">Type de bien</label>
+            <select id="filter-type" class="form-select">
+              <option value="">Tous types</option>
+              <option value="apartment">Appartement</option>
+              <option value="house">Maison</option>
+              <option value="land">Terrain</option>
+              <option value="commercial">Commercial</option>
+            </select>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-group-title">Budget (FCFA)</label>
+            <div class="flex gap-1">
+              <input type="number" id="filter-price-min" class="form-input" placeholder="Min">
+              <input type="number" id="filter-price-max" class="form-input" placeholder="Max">
+            </div>
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-group-title">Superficie min (m²)</label>
+            <input type="number" id="filter-surface-min" class="form-input" placeholder="Ex: 500">
+          </div>
+
+          <div class="filter-group">
+            <label class="filter-group-title">Trier par</label>
+            <select id="filter-sort" class="form-select">
+              <option value="newest">Plus récents</option>
+              <option value="price-asc">Prix croissant</option>
+              <option value="price-desc">Prix décroissant</option>
+            </select>
+          </div>
+
+          <button id="filter-reset" class="btn btn-outline" style="width: 100%;">
+            Réinitialiser
+          </button>
+        </aside>
+
+        <!-- Properties Grid -->
+        <div>
+          <div id="properties-grid" class="properties-grid">
+            <!-- Chargé dynamiquement -->
+            <div class="flex-center" style="grid-column: 1/-1; padding: 60px;">
+              <div class="spinner"></div>
+            </div>
+          </div>
+
+          <div id="pagination" class="pagination"></div>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+            <span>Opportunité d'affaires</span>
+          </a>
+          <p class="mt-2">
+            Votre plateforme immobilière de confiance au Cameroun.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html" class="footer-link">Accueil</a>
+            <a href="properties.html" class="footer-link">Annonces</a>
+            <a href="agencies.html" class="footer-link">Agences</a>
+            <a href="submit.html" class="footer-link">Publier</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Catégories</h4>
+          <div class="footer-links">
+            <a href="properties.html?type=land" class="footer-link">Terrains</a>
+            <a href="properties.html?type=house" class="footer-link">Maisons</a>
+            <a href="properties.html?type=apartment" class="footer-link">Appartements</a>
+            <a href="properties.html?type=commercial" class="footer-link">Commercial</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Contact</h4>
+          <div class="footer-links">
+            <span class="footer-link">📍 Yaoundé, Cameroun</span>
+            <span class="footer-link">📞 +237 6XX XXX XXX</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 Opportunité d'affaires. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/properties.js"></script>
+
+  <style>
+    /* Mobile: filters toggle */
+    @media (max-width: 768px) {
+      .filters {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        z-index: 1500;
+        transform: translateX(-100%);
+        transition: transform 0.3s ease;
+        overflow-y: auto;
+      }
+      .filters.active {
+        transform: translateX(0);
+      }
+      .filters-close {
+        display: block;
+        position: absolute;
+        top: 15px;
+        right: 15px;
+        background: none;
+        border: none;
+        font-size: 1.5rem;
+        cursor: pointer;
+      }
+      .filters-toggle-btn {
+        display: flex;
+      }
+      section .container > div {
+        grid-template-columns: 1fr !important;
+      }
+    }
+    @media (min-width: 769px) {
+      .filters-close, .filters-toggle-btn {
+        display: none;
+      }
+    }
+  </style>
+
+</body>
+</html>

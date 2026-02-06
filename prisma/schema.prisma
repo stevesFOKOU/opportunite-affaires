@@ -1,0 +1,281 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+enum Role {
+  admin_central
+  agent_regional
+  client_acheteur
+  client_vendeur
+}
+
+enum AgentStatus {
+  pending
+  approved
+  rejected
+}
+
+enum PropertyType {
+  apartment
+  house
+  land
+  commercial
+}
+
+enum PropertyStatus {
+  draft
+  published
+}
+
+model User {
+  id           String      @id @default(cuid())
+  createdAt    DateTime    @default(now())
+  updatedAt    DateTime    @updatedAt
+
+  email        String      @unique
+  passwordHash String
+
+  name         String
+  phone        String?
+  
+  // Profil étendu
+  avatar       String?
+  bio          String?
+  company      String?
+  address      String?
+  city         String?
+  region       String?
+
+  role         Role
+  agentStatus  AgentStatus?
+
+  properties   Property[]
+  favorites    Favorite[]
+  
+  // Messagerie
+  conversations ConversationParticipant[]
+  messages      Message[]
+  
+  // Visites et transactions
+  visitRequests      VisitRequest[] @relation("VisitRequester")
+  transactionsAsBuyer  Transaction[] @relation("TransactionBuyer")
+  transactionsAsSeller Transaction[] @relation("TransactionSeller")
+  
+  // Leads gérés (pour agents)
+  leadsManaged Lead[]
+
+  @@index([role])
+  @@index([agentStatus])
+}
+
+model Property {
+  id          String         @id @default(cuid())
+  createdAt   DateTime       @default(now())
+  updatedAt   DateTime       @updatedAt
+
+  title       String
+  description String
+  type        PropertyType
+  status      PropertyStatus @default(draft)
+
+  price       Int
+  currency    String         @default("XAF")
+
+  surfaceM2   Int?
+
+  region      String?
+  city        String?
+  address     String?
+
+  createdById String
+  createdBy   User           @relation(fields: [createdById], references: [id])
+
+  photos        PropertyPhoto[]
+  favorites     Favorite[]
+  conversations Conversation[]
+  visitRequests VisitRequest[]
+  transactions  Transaction[]
+  leads         Lead[]
+
+  @@index([status])
+  @@index([type])
+  @@index([price])
+  @@index([surfaceM2])
+  @@index([city])
+  @@index([region])
+  @@index([createdById])
+}
+
+model Favorite {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+
+  userId     String
+  user       User     @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@unique([userId, propertyId])
+  @@index([userId])
+  @@index([propertyId])
+}
+
+model PropertyPhoto {
+  id         String   @id @default(cuid())
+  createdAt  DateTime @default(now())
+
+  url        String
+  sortOrder  Int      @default(0)
+
+  propertyId String
+  property   Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  @@index([propertyId])
+}
+
+// Messagerie interne
+model Conversation {
+  id        String    @id @default(cuid())
+  createdAt DateTime  @default(now())
+  updatedAt DateTime  @updatedAt
+
+  propertyId String?
+  property   Property? @relation(fields: [propertyId], references: [id], onDelete: SetNull)
+
+  participants ConversationParticipant[]
+  messages     Message[]
+
+  @@index([propertyId])
+}
+
+model ConversationParticipant {
+  id             String       @id @default(cuid())
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  userId         String
+  user           User         @relation(fields: [userId], references: [id], onDelete: Cascade)
+
+  @@unique([conversationId, userId])
+  @@index([userId])
+}
+
+model Message {
+  id             String       @id @default(cuid())
+  createdAt      DateTime     @default(now())
+  content        String
+  read           Boolean      @default(false)
+
+  conversationId String
+  conversation   Conversation @relation(fields: [conversationId], references: [id], onDelete: Cascade)
+  senderId       String
+  sender         User         @relation(fields: [senderId], references: [id], onDelete: Cascade)
+
+  @@index([conversationId])
+  @@index([senderId])
+}
+
+// Demandes de visite
+model VisitRequest {
+  id          String   @id @default(cuid())
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+
+  propertyId  String
+  property    Property @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+  requesterId String
+  requester   User     @relation("VisitRequester", fields: [requesterId], references: [id], onDelete: Cascade)
+
+  preferredDate DateTime
+  message       String?
+  status        VisitStatus @default(pending)
+  agentNotes    String?
+
+  @@index([propertyId])
+  @@index([requesterId])
+  @@index([status])
+}
+
+enum VisitStatus {
+  pending
+  confirmed
+  completed
+  cancelled
+}
+
+// Transactions
+model Transaction {
+  id          String            @id @default(cuid())
+  createdAt   DateTime          @default(now())
+  updatedAt   DateTime          @updatedAt
+
+  propertyId  String
+  property    Property          @relation(fields: [propertyId], references: [id])
+  buyerId     String
+  buyer       User              @relation("TransactionBuyer", fields: [buyerId], references: [id])
+  sellerId    String
+  seller      User              @relation("TransactionSeller", fields: [sellerId], references: [id])
+
+  amount      Int
+  status      TransactionStatus @default(pending)
+  notes       String?
+
+  @@index([propertyId])
+  @@index([buyerId])
+  @@index([sellerId])
+  @@index([status])
+}
+
+enum TransactionStatus {
+  pending
+  in_progress
+  completed
+  cancelled
+}
+
+// Pipeline de leads
+model Lead {
+  id          String     @id @default(cuid())
+  createdAt   DateTime   @default(now())
+  updatedAt   DateTime   @updatedAt
+
+  // Contact
+  name        String
+  email       String?
+  phone       String
+  message     String?
+
+  // Propriété concernée
+  propertyId  String
+  property    Property   @relation(fields: [propertyId], references: [id], onDelete: Cascade)
+
+  // Agent assigné
+  agentId     String?
+  agent       User?      @relation(fields: [agentId], references: [id], onDelete: SetNull)
+
+  // Pipeline status
+  status      LeadStatus @default(nouveau)
+  notes       String?
+  nextAction  String?
+  nextActionDate DateTime?
+
+  @@index([propertyId])
+  @@index([agentId])
+  @@index([status])
+}
+
+enum LeadStatus {
+  nouveau
+  contacte
+  visite
+  offre
+  negociation
+  reserve
+  vendu
+  perdu
+}

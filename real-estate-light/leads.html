@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Pipeline Leads - Opportunité d'affaires</title>
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="Logo">
+        <span>Opportunité d'affaires</span>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="properties.html" class="nav-link">Annonces</a>
+        <a href="leads.html" class="nav-link active">Leads</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="user-menu">
+          <span class="user-name"></span>
+          <button class="btn btn-ghost logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle">Menu</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding-top: 90px;">
+    <div class="container section">
+
+      <!-- Auth Required -->
+      <div id="auth-required" class="card" style="max-width: 500px; margin: 0 auto; display: none;">
+        <div class="card-body text-center">
+          <div style="margin-bottom: 20px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <h2>Accès réservé</h2>
+          <p class="text-gray mt-1 mb-2">
+            Cette page est réservée aux agents et vendeurs.
+          </p>
+          <a href="login.html?redirect=leads.html" class="btn btn-primary">Se connecter</a>
+        </div>
+      </div>
+
+      <!-- Leads Content -->
+      <div id="leads-content" style="display: none;">
+        
+        <div class="flex-between mb-3" style="flex-wrap: wrap; gap: 20px;">
+          <div>
+            <h1 class="section-title">Pipeline de leads</h1>
+            <p class="section-subtitle">Gérez vos contacts et suivez vos opportunités</p>
+          </div>
+        </div>
+
+        <!-- Pipeline Stats -->
+        <div id="pipeline-stats" style="display: grid; grid-template-columns: repeat(auto-fit, minmax(100px, 1fr)); gap: 10px; margin-bottom: 30px;">
+        </div>
+
+        <!-- Leads List -->
+        <div class="card">
+          <div class="card-body">
+            <div class="flex-between mb-2">
+              <h3>Tous les leads</h3>
+              <select id="filter-status" class="form-select" style="width: auto;">
+                <option value="">Tous les statuts</option>
+                <option value="nouveau">Nouveau</option>
+                <option value="contacte">Contacté</option>
+                <option value="visite">Visite</option>
+                <option value="offre">Offre</option>
+                <option value="negociation">Négociation</option>
+                <option value="reserve">Réservé</option>
+                <option value="vendu">Vendu</option>
+                <option value="perdu">Perdu</option>
+              </select>
+            </div>
+
+            <div id="leads-list">
+              <div class="flex-center" style="padding: 40px;">
+                <div class="spinner"></div>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Lead Detail Modal -->
+  <div id="lead-modal" class="modal-overlay">
+    <div class="modal" style="max-width: 500px;">
+      <div class="modal-header">
+        <h3>Détail du lead</h3>
+        <button class="modal-close" onclick="closeLeadModal()">×</button>
+      </div>
+      <div class="modal-body">
+        <div id="lead-detail"></div>
+        <form id="lead-form" style="margin-top: 20px;">
+          <div class="form-group">
+            <label class="form-label">Statut</label>
+            <select name="status" id="lead-status" class="form-select">
+              <option value="nouveau">Nouveau</option>
+              <option value="contacte">Contacté</option>
+              <option value="visite">Visite programmée</option>
+              <option value="offre">Offre faite</option>
+              <option value="negociation">En négociation</option>
+              <option value="reserve">Réservé</option>
+              <option value="vendu">Vendu</option>
+              <option value="perdu">Perdu</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Notes</label>
+            <textarea name="notes" id="lead-notes" class="form-textarea" rows="3" placeholder="Notes internes..."></textarea>
+          </div>
+          <div class="form-group">
+            <label class="form-label">Prochaine action</label>
+            <input type="text" name="nextAction" id="lead-next-action" class="form-input" placeholder="Ex: Rappeler le client">
+          </div>
+          <div class="form-group">
+            <label class="form-label">Date prochaine action</label>
+            <input type="date" name="nextActionDate" id="lead-next-date" class="form-input">
+          </div>
+          <input type="hidden" id="lead-id">
+          <button type="submit" class="btn btn-primary" style="width: 100%;">Mettre à jour</button>
+        </form>
+      </div>
+    </div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 Opportunité d'affaires. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/properties.js"></script>
+  <script>
+    const statusLabels = {
+      nouveau: { label: 'Nouveau', color: '#3b82f6' },
+      contacte: { label: 'Contacté', color: '#8b5cf6' },
+      visite: { label: 'Visite', color: '#f59e0b' },
+      offre: { label: 'Offre', color: '#ec4899' },
+      negociation: { label: 'Négociation', color: '#f97316' },
+      reserve: { label: 'Réservé', color: '#14b8a6' },
+      vendu: { label: 'Vendu', color: '#10b981' },
+      perdu: { label: 'Perdu', color: '#6b7280' }
+    };
+
+    let allLeads = [];
+
+    document.addEventListener('DOMContentLoaded', () => {
+      const user = App.user;
+      if (App.isLoggedIn() && ['agent_regional', 'client_vendeur', 'admin_central'].includes(user?.role)) {
+        document.getElementById('auth-required').style.display = 'none';
+        document.getElementById('leads-content').style.display = 'block';
+        loadLeads();
+        loadPipelineStats();
+      } else {
+        document.getElementById('auth-required').style.display = 'block';
+        document.getElementById('leads-content').style.display = 'none';
+      }
+    });
+
+    async function loadPipelineStats() {
+      try {
+        const data = await apiRequest('/leads/stats');
+        const pipeline = data.pipeline || {};
+        
+        const statsHtml = Object.entries(statusLabels).map(([key, val]) => `
+          <div class="card" style="cursor: pointer;" onclick="filterByStatus('${key}')">
+            <div class="card-body text-center" style="padding: 15px;">
+              <div style="font-size: 1.5rem; font-weight: 700; color: ${val.color};">${pipeline[key] || 0}</div>
+              <div style="font-size: 0.75rem; color: var(--gray);">${val.label}</div>
+            </div>
+          </div>
+        `).join('');
+        
+        document.getElementById('pipeline-stats').innerHTML = statsHtml;
+      } catch (error) {
+        console.error('Erreur stats:', error);
+      }
+    }
+
+    async function loadLeads() {
+      const container = document.getElementById('leads-list');
+      
+      try {
+        const data = await apiRequest('/leads/mine');
+        allLeads = data.leads || [];
+        renderLeads(allLeads);
+      } catch (error) {
+        container.innerHTML = `<div class="alert alert-error">Erreur: ${error.message}</div>`;
+      }
+    }
+
+    function renderLeads(leads) {
+      const container = document.getElementById('leads-list');
+      
+      if (leads.length === 0) {
+        container.innerHTML = `
+          <div class="empty-state">
+            <div class="empty-state-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+            <div class="empty-state-title">Aucun lead</div>
+            <div class="empty-state-text">Les contacts intéressés par vos biens apparaîtront ici.</div>
+          </div>
+        `;
+        return;
+      }
+
+      container.innerHTML = `
+        <table style="width: 100%; border-collapse: collapse;">
+          <thead>
+            <tr style="border-bottom: 2px solid var(--gray-light);">
+              <th style="text-align: left; padding: 12px 8px;">Contact</th>
+              <th style="text-align: left; padding: 12px 8px;">Bien</th>
+              <th style="text-align: left; padding: 12px 8px;">Statut</th>
+              <th style="text-align: left; padding: 12px 8px;">Date</th>
+              <th style="text-align: right; padding: 12px 8px;">Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            ${leads.map(lead => `
+              <tr style="border-bottom: 1px solid var(--gray-light);">
+                <td style="padding: 12px 8px;">
+                  <div style="font-weight: 600;">${lead.name}</div>
+                  <div style="font-size: 0.875rem; color: var(--gray);">${lead.phone}</div>
+                </td>
+                <td style="padding: 12px 8px;">
+                  <a href="property-detail.html?id=${lead.property?.id}" style="color: var(--primary);">
+                    ${lead.property?.title || 'N/A'}
+                  </a>
+                </td>
+                <td style="padding: 12px 8px;">
+                  <span class="badge" style="background: ${statusLabels[lead.status]?.color || '#666'}; color: white;">
+                    ${statusLabels[lead.status]?.label || lead.status}
+                  </span>
+                </td>
+                <td style="padding: 12px 8px; font-size: 0.875rem; color: var(--gray);">
+                  ${new Date(lead.createdAt).toLocaleDateString('fr-FR')}
+                </td>
+                <td style="padding: 12px 8px; text-align: right;">
+                  <button class="btn btn-sm btn-outline" onclick="openLeadModal('${lead.id}')">Gérer</button>
+                </td>
+              </tr>
+            `).join('')}
+          </tbody>
+        </table>
+      `;
+    }
+
+    function filterByStatus(status) {
+      document.getElementById('filter-status').value = status;
+      const filtered = status ? allLeads.filter(l => l.status === status) : allLeads;
+      renderLeads(filtered);
+    }
+
+    document.getElementById('filter-status').addEventListener('change', (e) => {
+      filterByStatus(e.target.value);
+    });
+
+    function openLeadModal(leadId) {
+      const lead = allLeads.find(l => l.id === leadId);
+      if (!lead) return;
+
+      document.getElementById('lead-id').value = lead.id;
+      document.getElementById('lead-status').value = lead.status;
+      document.getElementById('lead-notes').value = lead.notes || '';
+      document.getElementById('lead-next-action').value = lead.nextAction || '';
+      document.getElementById('lead-next-date').value = lead.nextActionDate ? lead.nextActionDate.split('T')[0] : '';
+
+      document.getElementById('lead-detail').innerHTML = `
+        <div style="background: var(--light); padding: 15px; border-radius: 8px;">
+          <div style="font-weight: 600; font-size: 1.1rem;">${lead.name}</div>
+          <div style="margin-top: 10px;">
+            <a href="tel:${lead.phone}" class="btn btn-sm btn-primary">Appeler ${lead.phone}</a>
+            ${lead.email ? `<a href="mailto:${lead.email}" class="btn btn-sm btn-outline" style="margin-left: 5px;">Email</a>` : ''}
+          </div>
+          ${lead.message ? `<div style="margin-top: 15px; padding-top: 15px; border-top: 1px solid var(--gray-light);"><strong>Message:</strong><p style="margin-top: 5px; color: var(--gray);">${lead.message}</p></div>` : ''}
+          <div style="margin-top: 15px; font-size: 0.875rem; color: var(--gray);">
+            Bien: <a href="property-detail.html?id=${lead.property?.id}" style="color: var(--primary);">${lead.property?.title}</a>
+          </div>
+        </div>
+      `;
+
+      document.getElementById('lead-modal').classList.add('active');
+    }
+
+    function closeLeadModal() {
+      document.getElementById('lead-modal').classList.remove('active');
+    }
+
+    document.getElementById('lead-modal').addEventListener('click', (e) => {
+      if (e.target.classList.contains('modal-overlay')) closeLeadModal();
+    });
+
+    document.getElementById('lead-form').addEventListener('submit', async (e) => {
+      e.preventDefault();
+      const btn = e.target.querySelector('button[type="submit"]');
+      btn.disabled = true;
+      btn.textContent = 'Mise à jour...';
+
+      try {
+        const leadId = document.getElementById('lead-id').value;
+        await apiRequest(`/leads/${leadId}`, {
+          method: 'PATCH',
+          body: JSON.stringify({
+            status: document.getElementById('lead-status').value,
+            notes: document.getElementById('lead-notes').value,
+            nextAction: document.getElementById('lead-next-action').value,
+            nextActionDate: document.getElementById('lead-next-date').value || null
+          })
+        });
+
+        showNotification('Lead mis à jour', 'success');
+        closeLeadModal();
+        loadLeads();
+        loadPipelineStats();
+      } catch (error) {
+        showNotification(error.message, 'error');
+      } finally {
+        btn.disabled = false;
+        btn.textContent = 'Mettre à jour';
+      }
+    });
+  </script>
+
+  <style>
+    @media (max-width: 768px) {
+      table { font-size: 0.875rem; }
+      th, td { padding: 8px 4px !important; }
+    }
+  </style>
+
+</body>
+</html>

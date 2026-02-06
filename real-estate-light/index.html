@@ -1,0 +1,340 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta name="description" content="Opportunité d'affaires - Trouvez votre bien immobilier à Yaoundé et au Cameroun">
+  <title>Opportunité d'affaires - Immobilier Yaoundé</title>
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="Logo">
+        <span>Opportunité d'affaires</span>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="properties.html" class="nav-link">Annonces</a>
+        <a href="agencies.html" class="nav-link">Agences</a>
+        <a href="submit.html" class="nav-link">Publier</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="auth-buttons">
+          <a href="login.html" class="btn btn-outline">Se connecter</a>
+        </div>
+        <div class="user-menu" style="display: none;">
+          <span class="user-name"></span>
+          <a href="admin.html" class="btn btn-ghost">Dashboard</a>
+          <button class="btn btn-ghost logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle">Menu</button>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-content">
+        <span class="hero-badge">Nouveaux biens chaque semaine</span>
+        <h1 class="hero-title">
+          Trouvez votre <span>opportunité</span> immobilière à Yaoundé
+        </h1>
+        <p class="hero-text">
+          Parcourez des annonces de qualité, filtrez par budget et superficie, 
+          puis créez un compte pour sauvegarder vos favoris et partager sur WhatsApp.
+        </p>
+      </div>
+
+      <!-- Search Box -->
+      <div class="search-box mt-3">
+        <form class="search-box-inner" action="properties.html" method="GET" id="hero-search-form">
+          <div style="position: relative; flex: 2;">
+            <input type="text" name="q" id="hero-search-input" class="form-input" placeholder="Rechercher (ville, quartier, type...)" autocomplete="off">
+            <div id="search-suggestions" class="search-suggestions"></div>
+          </div>
+          <select name="type" class="form-select">
+            <option value="">Tous types</option>
+            <option value="apartment">Appartement</option>
+            <option value="house">Maison</option>
+            <option value="land">Terrain</option>
+            <option value="commercial">Commercial</option>
+          </select>
+          <input type="number" name="priceMax" class="form-input" placeholder="Budget max (FCFA)">
+          <button type="submit" class="btn btn-secondary">
+            Rechercher
+          </button>
+        </form>
+      </div>
+    </div>
+  </section>
+
+  <!-- Featured Properties -->
+  <section class="section">
+    <div class="container">
+      <div class="flex-between mb-3">
+        <div>
+          <h2 class="section-title">Annonces à la une</h2>
+          <p class="section-subtitle">Les meilleures opportunités du moment</p>
+        </div>
+        <a href="properties.html" class="btn btn-outline">Voir tout →</a>
+      </div>
+
+      <div id="featured-properties" class="properties-grid">
+        <!-- Chargé dynamiquement -->
+        <div class="flex-center" style="grid-column: 1/-1; padding: 60px;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Quick Links -->
+  <section class="section" style="background: var(--white);">
+    <div class="container">
+      <h2 class="section-title text-center">Recherches populaires</h2>
+      <p class="section-subtitle text-center">Accédez rapidement aux catégories les plus demandées</p>
+
+      <div class="properties-grid mt-3" style="grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));">
+        <a href="properties.html?type=land&q=yaound%C3%A9" class="card" style="text-decoration: none;">
+          <div class="card-body text-center">
+            <div style="margin-bottom: 15px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><path d="M3 21h18M9 8h1M9 12h1M9 16h1M14 8h1M14 12h1M14 16h1M5 21V5a2 2 0 012-2h10a2 2 0 012 2v16"/></svg></div>
+            <h3 class="card-title">Terrains à Yaoundé</h3>
+            <p class="text-gray">Parcelles constructibles</p>
+          </div>
+        </a>
+
+        <a href="properties.html?type=house" class="card" style="text-decoration: none;">
+          <div class="card-body text-center">
+            <div style="margin-bottom: 15px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+            <h3 class="card-title">Maisons</h3>
+            <p class="text-gray">Villas et maisons familiales</p>
+          </div>
+        </a>
+
+        <a href="properties.html?type=apartment" class="card" style="text-decoration: none;">
+          <div class="card-body text-center">
+            <div style="margin-bottom: 15px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><rect x="4" y="2" width="16" height="20" rx="2"/><path d="M9 6h2M9 10h2M9 14h2M13 6h2M13 10h2M13 14h2M9 18h6"/></svg></div>
+            <h3 class="card-title">Appartements</h3>
+            <p class="text-gray">Studios et appartements</p>
+          </div>
+        </a>
+
+        <a href="properties.html?priceMax=30000000" class="card" style="text-decoration: none;">
+          <div class="card-body text-center">
+            <div style="margin-bottom: 15px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--primary)" stroke-width="1.5"><circle cx="12" cy="12" r="10"/><path d="M12 6v12M9 9h4.5a2.5 2.5 0 010 5H9M9 14h5a2.5 2.5 0 010 5H9"/></svg></div>
+            <h3 class="card-title">Budget &lt; 30M</h3>
+            <p class="text-gray">Biens accessibles</p>
+          </div>
+        </a>
+      </div>
+    </div>
+  </section>
+
+
+  <!-- Newsletter -->
+  <section class="section" style="background: var(--primary); color: var(--white);">
+    <div class="container text-center">
+      <h2 class="section-title" style="color: var(--white);">Restez informé</h2>
+      <p style="opacity: 0.9; margin-bottom: 30px;">
+        Recevez les nouvelles annonces directement dans votre boîte mail
+      </p>
+      <form class="flex-center gap-2" style="max-width: 500px; margin: 0 auto; flex-wrap: wrap;">
+        <input type="email" class="form-input" placeholder="Votre email" style="flex: 1; min-width: 250px;">
+        <button type="submit" class="btn btn-secondary">S'inscrire</button>
+      </form>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+            <span>Opportunité d'affaires</span>
+          </a>
+          <p class="mt-2">
+            Votre plateforme immobilière de confiance au Cameroun. 
+            Trouvez terrains, maisons et appartements.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html" class="footer-link">Accueil</a>
+            <a href="properties.html" class="footer-link">Annonces</a>
+            <a href="agencies.html" class="footer-link">Agences</a>
+            <a href="submit.html" class="footer-link">Publier</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Catégories</h4>
+          <div class="footer-links">
+            <a href="properties.html?type=land" class="footer-link">Terrains</a>
+            <a href="properties.html?type=house" class="footer-link">Maisons</a>
+            <a href="properties.html?type=apartment" class="footer-link">Appartements</a>
+            <a href="properties.html?type=commercial" class="footer-link">Commercial</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Contact</h4>
+          <div class="footer-links">
+            <span class="footer-link">Yaoundé, Cameroun</span>
+            <span class="footer-link">+237 6XX XXX XXX</span>
+            <span class="footer-link">contact@opportunite.cm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">
+          © 2024 Opportunité d'affaires. Tous droits réservés.
+        </p>
+        <div class="footer-social">
+          <a href="#" title="Facebook"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M18 2h-3a5 5 0 00-5 5v3H7v4h3v8h4v-8h3l1-4h-4V7a1 1 0 011-1h3z"/></svg></a>
+          <a href="#" title="WhatsApp"><svg width="20" height="20" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg></a>
+          <a href="#" title="Instagram"><svg width="20" height="20" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><rect x="2" y="2" width="20" height="20" rx="5"/><path d="M16 11.37A4 4 0 1112.63 8 4 4 0 0116 11.37z"/><line x1="17.5" y1="6.5" x2="17.51" y2="6.5"/></svg></a>
+        </div>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script src="js/properties.js"></script>
+  <script>
+    // Charger les annonces à la une
+    document.addEventListener('DOMContentLoaded', async () => {
+      const container = document.getElementById('featured-properties');
+      try {
+        const properties = await loadProperties({ limit: 6 });
+        if (properties.length > 0) {
+          renderPropertiesGrid(properties.slice(0, 6), 'featured-properties');
+        } else {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+              <div class="empty-state-icon"><svg width="64" height="64" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><path d="M3 9l9-7 9 7v11a2 2 0 01-2 2H5a2 2 0 01-2-2z"/><polyline points="9 22 9 12 15 12 15 22"/></svg></div>
+              <div class="empty-state-title">Aucune annonce pour le moment</div>
+              <div class="empty-state-text">Revenez bientôt pour découvrir nos opportunités !</div>
+            </div>
+          `;
+        }
+      } catch (error) {
+        container.innerHTML = `
+          <div class="alert alert-error" style="grid-column: 1/-1;">
+            Erreur lors du chargement des annonces
+          </div>
+        `;
+      }
+
+      // Recherche avec suggestions
+      initSearchSuggestions();
+    });
+
+    // Suggestions de recherche
+    function initSearchSuggestions() {
+      const input = document.getElementById('hero-search-input');
+      const suggestions = document.getElementById('search-suggestions');
+      if (!input || !suggestions) return;
+
+      const popularSearches = [
+        { text: 'Terrains à Yaoundé', params: '?type=land&q=yaoundé' },
+        { text: 'Maisons à Douala', params: '?type=house&q=douala' },
+        { text: 'Appartements Centre', params: '?type=apartment&region=Centre' },
+        { text: 'Budget < 20M FCFA', params: '?priceMax=20000000' },
+        { text: 'Terrains Bastos', params: '?type=land&q=bastos' },
+        { text: 'Villas standing', params: '?type=house&q=villa' }
+      ];
+
+      let debounceTimer;
+
+      input.addEventListener('focus', () => {
+        if (input.value.length === 0) {
+          showPopularSearches();
+        }
+      });
+
+      input.addEventListener('input', () => {
+        clearTimeout(debounceTimer);
+        debounceTimer = setTimeout(() => {
+          const query = input.value.trim().toLowerCase();
+          if (query.length === 0) {
+            showPopularSearches();
+          } else {
+            searchProperties(query);
+          }
+        }, 300);
+      });
+
+      document.addEventListener('click', (e) => {
+        if (!input.contains(e.target) && !suggestions.contains(e.target)) {
+          suggestions.classList.remove('active');
+        }
+      });
+
+      function showPopularSearches() {
+        suggestions.innerHTML = `
+          <div class="suggestions-header">Recherches populaires</div>
+          ${popularSearches.map(s => `
+            <a href="properties.html${s.params}" class="suggestion-item">
+              <span>🔥</span> ${s.text}
+            </a>
+          `).join('')}
+        `;
+        suggestions.classList.add('active');
+      }
+
+      async function searchProperties(query) {
+        try {
+          const data = await apiRequest(`/properties?q=${encodeURIComponent(query)}`);
+          const properties = (data.properties || []).slice(0, 5);
+
+          if (properties.length === 0) {
+            suggestions.innerHTML = `
+              <div class="suggestions-header">Aucun résultat pour "${query}"</div>
+              <a href="properties.html?q=${encodeURIComponent(query)}" class="suggestion-item">
+                <span>🔍</span> Rechercher "${query}"
+              </a>
+            `;
+          } else {
+            suggestions.innerHTML = `
+              <div class="suggestions-header">${properties.length} résultat(s)</div>
+              ${properties.map(p => `
+                <a href="property-detail.html?id=${p.id}" class="suggestion-item">
+                  <span>${p.type === 'land' ? '🏞️' : p.type === 'house' ? '🏠' : p.type === 'apartment' ? '🏢' : '🏪'}</span>
+                  <div>
+                    <div>${p.title}</div>
+                    <small class="text-gray">${p.city || ''} - ${formatPrice(p.price)}</small>
+                  </div>
+                </a>
+              `).join('')}
+              <a href="properties.html?q=${encodeURIComponent(query)}" class="suggestion-item suggestion-all">
+                Voir tous les résultats →
+              </a>
+            `;
+          }
+          suggestions.classList.add('active');
+        } catch (error) {
+          suggestions.classList.remove('active');
+        }
+      }
+    }
+  </script>
+
+</body>
+</html>

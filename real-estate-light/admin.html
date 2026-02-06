@@ -1,0 +1,603 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Administration - Opportunité d'affaires</title>
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="Logo">
+        <span>Opportunité d'affaires</span>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="properties.html" class="nav-link">Annonces</a>
+        <a href="admin.html" class="nav-link">Admin</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="user-menu">
+          <span class="user-name"></span>
+          <button class="btn btn-ghost logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle">Menu</button>
+    </div>
+  </header>
+
+  <!-- Main Content -->
+  <main style="padding-top: 90px;">
+    <div class="container section">
+
+      <!-- Auth Required -->
+      <div id="auth-required" class="card" style="max-width: 500px; margin: 0 auto; display: none;">
+        <div class="card-body text-center">
+          <div style="margin-bottom: 20px;"><svg width="48" height="48" viewBox="0 0 24 24" fill="none" stroke="var(--gray)" stroke-width="1.5"><rect x="3" y="11" width="18" height="11" rx="2"/><path d="M7 11V7a5 5 0 0110 0v4"/></svg></div>
+          <h2>Accès réservé</h2>
+          <p class="text-gray mt-1 mb-2">
+            Cette page est réservée aux administrateurs.
+          </p>
+          <a href="login.html?redirect=admin.html" class="btn btn-primary">Se connecter</a>
+        </div>
+      </div>
+
+      <!-- Admin Dashboard -->
+      <div id="admin-dashboard" style="display: none;">
+        
+        <div class="flex-between mb-3" style="flex-wrap: wrap; gap: 20px;">
+          <div>
+            <h1 class="section-title">Administration</h1>
+            <p class="section-subtitle">Gérez les annonces et les agents</p>
+          </div>
+        </div>
+
+        <!-- Stats Overview -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(180px, 1fr)); gap: 20px; margin-bottom: 30px;">
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon" style="background: var(--primary-light); color: var(--primary);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M18 20V10M12 20V4M6 20v-6"/></svg></div>
+              <div class="stat-value" id="stat-total">-</div>
+              <div class="stat-label">Annonces totales</div>
+            </div>
+          </div>
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon" style="background: rgba(16, 185, 129, 0.1); color: var(--success);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><polyline points="20 6 9 17 4 12"/></svg></div>
+              <div class="stat-value" style="color: var(--success);" id="stat-published">-</div>
+              <div class="stat-label">Publiées</div>
+            </div>
+          </div>
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon" style="background: rgba(245, 158, 11, 0.1); color: var(--warning);"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><circle cx="12" cy="12" r="10"/><polyline points="12 6 12 12 16 14"/></svg></div>
+              <div class="stat-value" style="color: var(--warning);" id="stat-pending">-</div>
+              <div class="stat-label">En attente</div>
+            </div>
+          </div>
+          <div class="card stat-card">
+            <div class="card-body text-center">
+              <div class="stat-icon" style="background: rgba(99, 102, 241, 0.1); color: #6366f1;"><svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2"><path d="M17 21v-2a4 4 0 00-4-4H5a4 4 0 00-4 4v2"/><circle cx="9" cy="7" r="4"/><path d="M23 21v-2a4 4 0 00-3-3.87M16 3.13a4 4 0 010 7.75"/></svg></div>
+              <div class="stat-value" style="color: #6366f1;" id="stat-agents">-</div>
+              <div class="stat-label">Agents en attente</div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Advanced Stats -->
+        <div style="display: grid; grid-template-columns: repeat(auto-fit, minmax(300px, 1fr)); gap: 20px; margin-bottom: 40px;">
+          
+          <!-- Stats by Type -->
+          <div class="card">
+            <div class="card-body">
+              <h3 style="margin-bottom: 20px;">Répartition par type</h3>
+              <div id="stats-by-type">
+                <div class="stat-bar-container">
+                  <div class="stat-bar-label">
+                    <span>Terrains</span>
+                    <span id="stat-type-land">0</span>
+                  </div>
+                  <div class="stat-bar">
+                    <div class="stat-bar-fill" id="bar-land" style="width: 0%; background: #10b981;"></div>
+                  </div>
+                </div>
+                <div class="stat-bar-container">
+                  <div class="stat-bar-label">
+                    <span>Maisons</span>
+                    <span id="stat-type-house">0</span>
+                  </div>
+                  <div class="stat-bar">
+                    <div class="stat-bar-fill" id="bar-house" style="width: 0%; background: #3b82f6;"></div>
+                  </div>
+                </div>
+                <div class="stat-bar-container">
+                  <div class="stat-bar-label">
+                    <span>Appartements</span>
+                    <span id="stat-type-apartment">0</span>
+                  </div>
+                  <div class="stat-bar">
+                    <div class="stat-bar-fill" id="bar-apartment" style="width: 0%; background: #8b5cf6;"></div>
+                  </div>
+                </div>
+                <div class="stat-bar-container">
+                  <div class="stat-bar-label">
+                    <span>Commercial</span>
+                    <span id="stat-type-commercial">0</span>
+                  </div>
+                  <div class="stat-bar">
+                    <div class="stat-bar-fill" id="bar-commercial" style="width: 0%; background: #f59e0b;"></div>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Stats by Region -->
+          <div class="card">
+            <div class="card-body">
+              <h3 style="margin-bottom: 20px;">Top régions</h3>
+              <div id="stats-by-region">
+                <div class="text-gray text-center">Chargement...</div>
+              </div>
+            </div>
+          </div>
+
+          <!-- Price Stats -->
+          <div class="card">
+            <div class="card-body">
+              <h3 style="margin-bottom: 20px;">Statistiques prix</h3>
+              <div style="display: grid; gap: 15px;">
+                <div class="flex-between" style="padding: 10px; background: var(--light); border-radius: 8px;">
+                  <span class="text-gray">Prix moyen</span>
+                  <span style="font-weight: 700; color: var(--primary);" id="stat-price-avg">-</span>
+                </div>
+                <div class="flex-between" style="padding: 10px; background: var(--light); border-radius: 8px;">
+                  <span class="text-gray">Prix minimum</span>
+                  <span style="font-weight: 600;" id="stat-price-min">-</span>
+                </div>
+                <div class="flex-between" style="padding: 10px; background: var(--light); border-radius: 8px;">
+                  <span class="text-gray">Prix maximum</span>
+                  <span style="font-weight: 600;" id="stat-price-max">-</span>
+                </div>
+                <div class="flex-between" style="padding: 10px; background: var(--light); border-radius: 8px;">
+                  <span class="text-gray">Valeur totale</span>
+                  <span style="font-weight: 700; color: var(--success);" id="stat-price-total">-</span>
+                </div>
+              </div>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Tabs -->
+        <div style="display: flex; gap: 10px; margin-bottom: 20px; border-bottom: 2px solid var(--gray-light); padding-bottom: 10px;">
+          <button class="btn btn-ghost admin-tab active" data-tab="properties">📋 Annonces</button>
+          <button class="btn btn-ghost admin-tab" data-tab="agents">👥 Agents</button>
+        </div>
+
+        <!-- Properties Tab -->
+        <div id="tab-properties" class="admin-tab-content">
+          <div class="card">
+            <div class="card-body">
+              <div class="flex-between mb-2">
+                <h3>Annonces en attente de validation</h3>
+                <select id="filter-status" class="form-select" style="width: auto;">
+                  <option value="draft">En attente</option>
+                  <option value="published">Publiées</option>
+                  <option value="">Toutes</option>
+                </select>
+              </div>
+
+              <div class="table-container">
+                <table class="table" id="properties-table">
+                  <thead>
+                    <tr>
+                      <th>Titre</th>
+                      <th>Type</th>
+                      <th>Prix</th>
+                      <th>Ville</th>
+                      <th>Statut</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="6" class="text-center text-gray">Chargement...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <!-- Agents Tab -->
+        <div id="tab-agents" class="admin-tab-content hidden">
+          <div class="card">
+            <div class="card-body">
+              <h3 class="mb-2">Agents en attente de validation</h3>
+
+              <div class="table-container">
+                <table class="table" id="agents-table">
+                  <thead>
+                    <tr>
+                      <th>Nom</th>
+                      <th>Email</th>
+                      <th>Téléphone</th>
+                      <th>Statut</th>
+                      <th>Actions</th>
+                    </tr>
+                  </thead>
+                  <tbody>
+                    <tr>
+                      <td colspan="5" class="text-center text-gray">Chargement...</td>
+                    </tr>
+                  </tbody>
+                </table>
+              </div>
+            </div>
+          </div>
+        </div>
+
+      </div>
+
+    </div>
+  </main>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 Opportunité d'affaires. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Vérifier l'accès admin
+    document.addEventListener('DOMContentLoaded', () => {
+      if (App.isLoggedIn() && App.user?.role === 'admin_central') {
+        document.getElementById('auth-required').style.display = 'none';
+        document.getElementById('admin-dashboard').style.display = 'block';
+        loadAdminData();
+      } else {
+        document.getElementById('auth-required').style.display = 'block';
+        document.getElementById('admin-dashboard').style.display = 'none';
+      }
+
+      // Tabs
+      document.querySelectorAll('.admin-tab').forEach(tab => {
+        tab.addEventListener('click', () => {
+          document.querySelectorAll('.admin-tab').forEach(t => t.classList.remove('active'));
+          document.querySelectorAll('.admin-tab-content').forEach(c => c.classList.add('hidden'));
+          tab.classList.add('active');
+          document.getElementById(`tab-${tab.dataset.tab}`).classList.remove('hidden');
+        });
+      });
+
+      // Filter status
+      document.getElementById('filter-status')?.addEventListener('change', loadProperties);
+    });
+
+    // Charger les données admin
+    async function loadAdminData() {
+      await Promise.all([loadProperties(), loadAgents(), loadStats()]);
+    }
+
+    // Charger les stats
+    async function loadStats() {
+      try {
+        const properties = await apiRequest('/admin/properties');
+        const allProps = properties.properties || properties || [];
+        
+        // Stats de base
+        document.getElementById('stat-total').textContent = allProps.length;
+        document.getElementById('stat-published').textContent = allProps.filter(p => p.status === 'published').length;
+        document.getElementById('stat-pending').textContent = allProps.filter(p => p.status === 'draft').length;
+
+        // Stats par type
+        const byType = { land: 0, house: 0, apartment: 0, commercial: 0 };
+        allProps.forEach(p => { if (byType[p.type] !== undefined) byType[p.type]++; });
+        const maxType = Math.max(...Object.values(byType), 1);
+        
+        document.getElementById('stat-type-land').textContent = byType.land;
+        document.getElementById('stat-type-house').textContent = byType.house;
+        document.getElementById('stat-type-apartment').textContent = byType.apartment;
+        document.getElementById('stat-type-commercial').textContent = byType.commercial;
+        
+        document.getElementById('bar-land').style.width = `${(byType.land / maxType) * 100}%`;
+        document.getElementById('bar-house').style.width = `${(byType.house / maxType) * 100}%`;
+        document.getElementById('bar-apartment').style.width = `${(byType.apartment / maxType) * 100}%`;
+        document.getElementById('bar-commercial').style.width = `${(byType.commercial / maxType) * 100}%`;
+
+        // Stats par région
+        const byRegion = {};
+        allProps.forEach(p => {
+          const region = p.region || p.city || 'Non spécifié';
+          byRegion[region] = (byRegion[region] || 0) + 1;
+        });
+        const topRegions = Object.entries(byRegion)
+          .sort((a, b) => b[1] - a[1])
+          .slice(0, 5);
+        
+        const maxRegion = topRegions[0]?.[1] || 1;
+        document.getElementById('stats-by-region').innerHTML = topRegions.length > 0 
+          ? topRegions.map(([region, count]) => `
+              <div class="stat-bar-container">
+                <div class="stat-bar-label">
+                  <span>📍 ${region}</span>
+                  <span>${count}</span>
+                </div>
+                <div class="stat-bar">
+                  <div class="stat-bar-fill" style="width: ${(count / maxRegion) * 100}%; background: var(--primary);"></div>
+                </div>
+              </div>
+            `).join('')
+          : '<div class="text-gray text-center">Aucune donnée</div>';
+
+        // Stats prix
+        if (allProps.length > 0) {
+          const prices = allProps.map(p => p.price).filter(p => p > 0);
+          const avgPrice = prices.reduce((a, b) => a + b, 0) / prices.length;
+          const minPrice = Math.min(...prices);
+          const maxPrice = Math.max(...prices);
+          const totalPrice = prices.reduce((a, b) => a + b, 0);
+
+          document.getElementById('stat-price-avg').textContent = formatPrice(Math.round(avgPrice));
+          document.getElementById('stat-price-min').textContent = formatPrice(minPrice);
+          document.getElementById('stat-price-max').textContent = formatPrice(maxPrice);
+          document.getElementById('stat-price-total').textContent = formatPrice(totalPrice);
+        }
+
+      } catch (error) {
+        console.error('Erreur stats:', error);
+      }
+
+      try {
+        const agents = await apiRequest('/admin/agents/pending');
+        document.getElementById('stat-agents').textContent = (agents.agents || agents || []).length;
+      } catch (error) {
+        document.getElementById('stat-agents').textContent = '0';
+      }
+    }
+
+    // Charger les annonces
+    async function loadProperties() {
+      const tbody = document.querySelector('#properties-table tbody');
+      const status = document.getElementById('filter-status')?.value || 'draft';
+
+      try {
+        const data = await apiRequest(`/admin/properties?status=${status}`);
+        const properties = data.properties || data || [];
+
+        if (properties.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray">Aucune annonce</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = properties.map(p => `
+          <tr>
+            <td><strong>${p.title}</strong></td>
+            <td>${translatePropertyType(p.type)}</td>
+            <td>${formatPrice(p.price, p.currency)}</td>
+            <td>${p.city || '-'}</td>
+            <td><span class="badge badge-${p.status === 'published' ? 'success' : 'warning'}">${p.status === 'published' ? 'Publié' : 'En attente'}</span></td>
+            <td>
+              <div style="display: flex; gap: 8px; flex-wrap: wrap;">
+                ${p.status === 'draft' ? `
+                  <button class="btn btn-sm btn-primary" onclick="approveProperty('${p.id}')">Valider</button>
+                ` : `
+                  <a href="property-detail.html?id=${p.id}" class="btn btn-sm btn-outline">Voir</a>
+                `}
+                <button class="btn btn-sm btn-danger" onclick="rejectProperty('${p.id}')">Supprimer</button>
+              </div>
+            </td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        tbody.innerHTML = '<tr><td colspan="6" class="text-center text-gray">Erreur de chargement</td></tr>';
+      }
+    }
+
+    // Charger les agents
+    async function loadAgents() {
+      const tbody = document.querySelector('#agents-table tbody');
+
+      try {
+        const data = await apiRequest('/admin/agents/pending');
+        const agents = data.agents || data || [];
+
+        if (agents.length === 0) {
+          tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray">Aucun agent en attente</td></tr>';
+          return;
+        }
+
+        tbody.innerHTML = agents.map(a => `
+          <tr>
+            <td><strong>${a.name || '-'}</strong></td>
+            <td>${a.email}</td>
+            <td>${a.phone || '-'}</td>
+            <td><span class="badge badge-warning">${a.agentStatus}</span></td>
+            <td>
+              <button class="btn btn-sm btn-primary" onclick="approveAgent('${a.id}')">✅ Valider</button>
+              <button class="btn btn-sm btn-ghost" onclick="rejectAgent('${a.id}')">❌</button>
+            </td>
+          </tr>
+        `).join('');
+      } catch (error) {
+        tbody.innerHTML = '<tr><td colspan="5" class="text-center text-gray">Erreur de chargement</td></tr>';
+      }
+    }
+
+    // Valider une annonce
+    async function approveProperty(id) {
+      try {
+        await apiRequest(`/admin/properties/${id}/approve`, { method: 'PATCH' });
+        showNotification('Annonce validée !', 'success');
+        loadProperties();
+        loadStats();
+      } catch (error) {
+        showNotification(error.message, 'error');
+      }
+    }
+
+    // Refuser une annonce
+    async function rejectProperty(id) {
+      if (!confirm('Supprimer cette annonce ?')) return;
+      try {
+        await apiRequest(`/admin/properties/${id}/reject`, { method: 'PATCH' });
+        showNotification('Annonce supprimée', 'success');
+        loadProperties();
+        loadStats();
+      } catch (error) {
+        showNotification(error.message, 'error');
+      }
+    }
+
+    // Valider un agent
+    async function approveAgent(id) {
+      try {
+        await apiRequest(`/admin/agents/${id}/approve`, { method: 'PATCH' });
+        showNotification('Agent validé !', 'success');
+        loadAgents();
+        loadStats();
+      } catch (error) {
+        showNotification(error.message, 'error');
+      }
+    }
+
+    // Refuser un agent
+    async function rejectAgent(id) {
+      if (!confirm('Refuser cet agent ?')) return;
+      try {
+        await apiRequest(`/admin/agents/${id}/reject`, { method: 'PATCH' });
+        showNotification('Agent refusé', 'success');
+        loadAgents();
+        loadStats();
+      } catch (error) {
+        showNotification(error.message, 'error');
+      }
+    }
+  </script>
+
+  <style>
+    .admin-tab {
+      padding: 12px 24px;
+      border: none;
+      background: var(--light);
+      color: var(--gray);
+      font-weight: 600;
+      cursor: pointer;
+      transition: var(--transition);
+      border-radius: var(--radius-sm);
+    }
+
+    .admin-tab:hover {
+      background: var(--gray-light);
+      color: var(--dark);
+    }
+
+    .admin-tab.active {
+      background: var(--primary);
+      color: white;
+    }
+
+    .stat-card {
+      transition: var(--transition);
+    }
+
+    .stat-card:hover {
+      transform: translateY(-3px);
+      box-shadow: var(--shadow-lg);
+    }
+
+    .stat-icon {
+      width: 50px;
+      height: 50px;
+      border-radius: 12px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      margin: 0 auto 15px;
+    }
+
+    .stat-value {
+      font-size: 2rem;
+      font-weight: 700;
+      color: var(--dark);
+      margin-bottom: 5px;
+    }
+
+    .stat-label {
+      font-size: 0.9rem;
+      color: var(--gray);
+    }
+
+    .table {
+      width: 100%;
+      border-collapse: collapse;
+    }
+
+    .table th {
+      text-align: left;
+      padding: 14px 12px;
+      background: var(--light);
+      font-weight: 600;
+      color: var(--dark);
+      border-bottom: 2px solid var(--gray-light);
+      font-size: 0.9rem;
+    }
+
+    .table td {
+      padding: 14px 12px;
+      border-bottom: 1px solid var(--gray-light);
+      vertical-align: middle;
+    }
+
+    .table tr:hover {
+      background: var(--light);
+    }
+
+    .table-container {
+      overflow-x: auto;
+    }
+
+    .stat-bar-container {
+      margin-bottom: 15px;
+    }
+
+    .stat-bar-label {
+      display: flex;
+      justify-content: space-between;
+      margin-bottom: 6px;
+      font-size: 0.9rem;
+    }
+
+    .stat-bar {
+      height: 8px;
+      background: var(--gray-light);
+      border-radius: 4px;
+      overflow: hidden;
+    }
+
+    .stat-bar-fill {
+      height: 100%;
+      border-radius: 4px;
+      transition: width 0.5s ease;
+    }
+  </style>
+
+</body>
+</html>

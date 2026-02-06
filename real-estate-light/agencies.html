@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="fr">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agences partenaires - Opportunité d'affaires</title>
+  <link rel="icon" href="assets/images/logo.png" type="image/png">
+  <link rel="stylesheet" href="css/style.css">
+  <link rel="stylesheet" href="css/responsive.css">
+</head>
+<body>
+
+  <!-- Header -->
+  <header class="header">
+    <div class="container header-inner">
+      <a href="index.html" class="logo">
+        <img src="assets/images/logo.png" alt="Logo">
+        <span>Opportunité d'affaires</span>
+      </a>
+
+      <nav class="nav">
+        <a href="index.html" class="nav-link">Accueil</a>
+        <a href="properties.html" class="nav-link">Annonces</a>
+        <a href="agencies.html" class="nav-link">Agences</a>
+        <a href="submit.html" class="nav-link">Publier</a>
+      </nav>
+
+      <div class="nav-actions">
+        <div class="auth-buttons">
+          <a href="login.html" class="btn btn-outline">Se connecter</a>
+        </div>
+        <div class="user-menu" style="display: none;">
+          <span class="user-name"></span>
+          <button class="btn btn-ghost logout-btn">Déconnexion</button>
+        </div>
+      </div>
+
+      <button class="menu-toggle">Menu</button>
+    </div>
+  </header>
+
+  <!-- Page Header -->
+  <section style="padding: 120px 0 40px; background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+    <div class="container">
+      <h1 class="section-title" style="color: white;">Agences partenaires</h1>
+      <p style="opacity: 0.9;">Découvrez nos agences immobilières de confiance au Cameroun</p>
+    </div>
+  </section>
+
+  <!-- Main Content -->
+  <section class="section">
+    <div class="container">
+
+      <!-- Agencies Grid -->
+      <div id="agencies-grid" class="properties-grid" style="grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));">
+        <div class="flex-center" style="grid-column: 1/-1; padding: 60px;">
+          <div class="spinner"></div>
+        </div>
+      </div>
+
+      <!-- CTA -->
+      <div class="card mt-3" style="background: linear-gradient(135deg, var(--primary) 0%, var(--primary-dark) 100%); color: white;">
+        <div class="card-body text-center" style="padding: 40px;">
+          <h2 style="margin-bottom: 10px;">Vous êtes une agence immobilière ?</h2>
+          <p style="opacity: 0.9; margin-bottom: 20px;">
+            Rejoignez notre plateforme et publiez vos annonces gratuitement
+          </p>
+          <a href="login.html" class="btn btn-secondary btn-lg">
+            Devenir partenaire
+          </a>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container">
+      <div class="footer-grid">
+        <div class="footer-brand">
+          <a href="index.html" class="logo">
+            <img src="assets/images/logo.png" alt="Logo">
+            <span>Opportunité d'affaires</span>
+          </a>
+          <p class="mt-2">
+            Votre plateforme immobilière de confiance au Cameroun.
+          </p>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Navigation</h4>
+          <div class="footer-links">
+            <a href="index.html" class="footer-link">Accueil</a>
+            <a href="properties.html" class="footer-link">Annonces</a>
+            <a href="agencies.html" class="footer-link">Agences</a>
+            <a href="submit.html" class="footer-link">Publier</a>
+          </div>
+        </div>
+
+        <div>
+          <h4 class="footer-title">Contact</h4>
+          <div class="footer-links">
+            <span class="footer-link">📍 Yaoundé, Cameroun</span>
+            <span class="footer-link">📞 +237 6XX XXX XXX</span>
+            <span class="footer-link">✉️ contact@opportunite.cm</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="footer-bottom">
+        <p class="footer-copyright">© 2024 Opportunité d'affaires. Tous droits réservés.</p>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Scripts -->
+  <script src="js/app.js"></script>
+  <script src="js/auth.js"></script>
+  <script>
+    // Charger les agents validés depuis le backend
+    async function loadAgencies() {
+      const container = document.getElementById('agencies-grid');
+      
+      try {
+        const data = await apiRequest('/admin/agents');
+        const agents = data.agents || data || [];
+
+        if (agents.length === 0) {
+          container.innerHTML = `
+            <div class="empty-state" style="grid-column: 1/-1;">
+              <div class="empty-state-icon">🏢</div>
+              <div class="empty-state-title">Aucune agence pour le moment</div>
+              <div class="empty-state-text">Les agences partenaires apparaîtront ici une fois validées.</div>
+            </div>
+          `;
+          return;
+        }
+
+        const colors = ['var(--primary)', 'var(--secondary)', 'var(--success)', 'var(--warning)'];
+        
+        container.innerHTML = agents.map((agent, index) => {
+          const initials = (agent.name || 'AG').split(' ').map(n => n[0]).join('').substring(0, 2).toUpperCase();
+          const color = colors[index % colors.length];
+          
+          return `
+            <div class="card">
+              <div class="card-body">
+                <div class="flex gap-2" style="align-items: flex-start;">
+                  <div style="width: 70px; height: 70px; background: ${color}; border-radius: 12px; display: flex; align-items: center; justify-content: center; color: white; font-size: 1.5rem; font-weight: bold; flex-shrink: 0;">
+                    ${initials}
+                  </div>
+                  <div>
+                    <h3 style="margin-bottom: 5px;">${agent.name || 'Agent immobilier'}</h3>
+                    <p class="text-gray" style="font-size: 0.875rem;">Agent immobilier</p>
+                  </div>
+                </div>
+
+                <div style="margin: 20px 0; padding: 15px 0; border-top: 1px solid var(--gray-light); border-bottom: 1px solid var(--gray-light);">
+                  ${agent.phone ? `
+                    <div class="flex-between mb-1">
+                      <span class="text-gray">📞 Téléphone</span>
+                      <span>${agent.phone}</span>
+                    </div>
+                  ` : ''}
+                  <div class="flex-between">
+                    <span class="text-gray">✉️ Email</span>
+                    <span style="font-size: 0.875rem;">${agent.email}</span>
+                  </div>
+                </div>
+
+                <a href="properties.html?createdById=${agent.id}" class="btn btn-outline" style="width: 100%;">
+                  Voir les annonces
+                </a>
+              </div>
+            </div>
+          `;
+        }).join('');
+
+      } catch (error) {
+        container.innerHTML = `
+          <div class="empty-state" style="grid-column: 1/-1;">
+            <div class="empty-state-icon">🏢</div>
+            <div class="empty-state-title">Aucune agence pour le moment</div>
+            <div class="empty-state-text">Les agences partenaires apparaîtront ici.</div>
+          </div>
+        `;
+      }
+    }
+
+    document.addEventListener('DOMContentLoaded', loadAgencies);
+  </script>
+
+</body>
+</html>
