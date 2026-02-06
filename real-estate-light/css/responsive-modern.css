@@ -56,10 +56,11 @@
     backdrop-filter: blur(20px);
     -webkit-backdrop-filter: blur(20px);
     flex-direction: column;
-    justify-content: center;
+    justify-content: flex-start;
     align-items: center;
-    gap: var(--space-3);
-    padding: var(--space-8);
+    gap: var(--space-2);
+    padding: 80px var(--space-4) var(--space-4);
+    overflow-y: auto;
     transform: translateX(-100%);
     opacity: 0;
     visibility: hidden;
@@ -74,14 +75,14 @@
   }
 
   .nav-link {
-    font-size: var(--text-lg);
-    font-weight: var(--font-semibold);
-    padding: var(--space-4) var(--space-8);
-    width: 100%;
-    max-width: 300px;
+    font-size: var(--text-sm);
+    font-weight: var(--font-medium);
+    padding: var(--space-3) var(--space-5);
+    width: auto;
+    min-width: 140px;
     text-align: center;
-    border-radius: var(--radius-xl);
-    background: var(--gray-50);
+    border-radius: var(--radius-lg);
+    background: var(--gray-100);
     color: var(--text-primary);
     transition: var(--transition-fast);
   }
