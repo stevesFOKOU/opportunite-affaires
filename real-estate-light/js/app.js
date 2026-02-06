@@ -113,8 +113,48 @@ const App = {
         nav.appendChild(adminLink);
       }
 
+      // Séparateur et bouton déconnexion dans le menu mobile
+      const separator = document.createElement('div');
+      separator.className = 'nav-separator nav-link-dynamic';
+      separator.style.cssText = 'height: 1px; background: var(--gray-200); margin: 8px 0;';
+      nav.appendChild(separator);
+
+      // Lien Profil
+      const profileLink = document.createElement('a');
+      profileLink.href = 'profile.html';
+      profileLink.className = 'nav-link nav-link-dynamic';
+      profileLink.textContent = '👤 Mon profil';
+      nav.appendChild(profileLink);
+
+      // Bouton déconnexion
+      const logoutLink = document.createElement('a');
+      logoutLink.href = '#';
+      logoutLink.className = 'nav-link nav-link-dynamic logout-btn';
+      logoutLink.style.color = 'var(--error)';
+      logoutLink.textContent = '🚪 Déconnexion';
+      logoutLink.addEventListener('click', (e) => {
+        e.preventDefault();
+        this.logout();
+      });
+      nav.appendChild(logoutLink);
+
       // Charger les notifications
       this.loadNotifications();
+    } else if (nav) {
+      // Utilisateur non connecté - ajouter lien connexion dans le menu
+      nav.querySelectorAll('.nav-link-dynamic').forEach(el => el.remove());
+      
+      const separator = document.createElement('div');
+      separator.className = 'nav-separator nav-link-dynamic';
+      separator.style.cssText = 'height: 1px; background: var(--gray-200); margin: 8px 0;';
+      nav.appendChild(separator);
+
+      const loginLink = document.createElement('a');
+      loginLink.href = 'login.html';
+      loginLink.className = 'nav-link nav-link-dynamic';
+      loginLink.style.cssText = 'background: var(--primary); color: white; text-align: center;';
+      loginLink.textContent = '🔐 Se connecter';
+      nav.appendChild(loginLink);
     }
 
     // Ajouter lien Profil dans le menu utilisateur
